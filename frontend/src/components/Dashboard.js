@@ -4,6 +4,8 @@ import Navbar from "./Navbar";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
 
+axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 const Dashboard = ({ setIsAuthenticated }) => {
   const [expenses, setExpenses] = useState([]);
 

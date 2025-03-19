@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import "../styles/Navbar.css";
 
+axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 const Navbar = ({ setIsAuthenticated }) => {
   const handleLogout = async () => {
     try {

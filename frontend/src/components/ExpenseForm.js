@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/ExpenseForm.css";
 
+axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 const ExpenseForm = ({ fetchExpenses }) => {
   const [form, setForm] = useState({ amount: "", category: "", date: "", description: "" });
 

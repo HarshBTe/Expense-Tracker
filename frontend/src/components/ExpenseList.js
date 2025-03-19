@@ -3,6 +3,8 @@ import axios from "axios";
 import "../styles/ExpenseList.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 const ExpenseList = ({ expenses, setExpenses }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
