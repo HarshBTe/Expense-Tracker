@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
 
 const Login = ({ setIsAuthenticated, setShowRegister }) => {
   const [form, setForm] = useState({ email: "", password: "" });
