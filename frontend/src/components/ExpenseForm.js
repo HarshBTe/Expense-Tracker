@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/ExpenseForm.css";
 
-
-
 const ExpenseForm = ({ fetchExpenses }) => {
   const [form, setForm] = useState({ amount: "", category: "", date: "", description: "" });
+  const token = localStorage.getItem("token");
 
   const addExpense = async () => {
     try {
@@ -13,20 +12,23 @@ const ExpenseForm = ({ fetchExpenses }) => {
         ...form,
         amount: parseFloat(form.amount) || 0, // Convert amount to number
       };
-  
+
       await axios.post("https://expense-backend-07ul.onrender.com/expenses", payload, {
         withCredentials: true,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       });
-  
+
       alert("Expense added successfully!");
+      setForm({ amount: "", category: "", date: "", description: "" }); // Reset form
       fetchExpenses();
     } catch (error) {
       console.error("Error adding expense:", error);
       alert(error.response?.data?.message || "Failed to add expense. Please try again.");
     }
   };
-  
 
   return (
     <div className="form-container">

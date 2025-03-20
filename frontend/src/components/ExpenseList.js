@@ -3,21 +3,22 @@ import axios from "axios";
 import "../styles/ExpenseList.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
-
-
 const ExpenseList = ({ expenses, setExpenses }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
   const itemsPerPage = 3;
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchExpenses();
-  }, []);
+  }, [setExpenses]);
 
   const fetchExpenses = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", { headers: { Authorization: `Bearer ${token}` }, withCredentials: true });
+      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses", error);
@@ -27,8 +28,17 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://expense-backend-07ul.onrender.com/expenses/${id}`, { withCredentials: true });
-      setExpenses((prevExpenses) => prevExpenses.filter((exp) => exp._id !== id));
+      await axios.delete(`https://expense-backend-07ul.onrender.com/expenses/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        withCredentials: true,
+      });
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = prevExpenses.filter((exp) => exp._id !== id);
+        if (updatedExpenses.length % itemsPerPage === 0 && currentPage > 1) {
+          setCurrentPage(currentPage - 1);
+        }
+        return updatedExpenses;
+      });
     } catch (error) {
       console.error("Error deleting expense", error);
       alert("Failed to delete expense");
@@ -49,9 +59,9 @@ const ExpenseList = ({ expenses, setExpenses }) => {
   const categoryData = expenses.reduce((acc, exp) => {
     const found = acc.find((item) => item.category === exp.category);
     if (found) {
-      found.amount += exp.amount;
+      found.amount += Number(exp.amount);
     } else {
-      acc.push({ category: exp.category, amount: exp.amount });
+      acc.push({ category: exp.category, amount: Number(exp.amount) });
     }
     return acc;
   }, []);
