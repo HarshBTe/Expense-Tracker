@@ -7,7 +7,6 @@ const ExpenseList = ({ expenses, setExpenses }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
   const itemsPerPage = 3;
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchExpenses();
@@ -15,28 +14,17 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const fetchExpenses = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("No token found");
-  
-      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
-  
+      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses" , { withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses:", error);
       alert(error.response?.data?.message || "Failed to fetch expenses. Please try again.");
     }
   };
-  
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://expense-backend-07ul.onrender.com/expenses/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        withCredentials: true,
-      });
+      await axios.delete(`https://expense-backend-07ul.onrender.com/expenses/${id}`, { withCredentials: true });
       setExpenses((prevExpenses) => {
         const updatedExpenses = prevExpenses.filter((exp) => exp._id !== id);
         if (updatedExpenses.length % itemsPerPage === 0 && currentPage > 1) {
