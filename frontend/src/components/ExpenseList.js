@@ -16,7 +16,8 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", { withCredentials: true });
+      const token = localStorage.getItem("token");
+      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", { headers: { Authorization: `Bearer ${token}` }, withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses", error);
