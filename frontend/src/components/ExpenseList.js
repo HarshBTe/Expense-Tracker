@@ -3,25 +3,21 @@ import axios from "axios";
 import "../styles/ExpenseList.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+
+
 const ExpenseList = ({ expenses, setExpenses }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [expenseId, setExpenseId] = useState(""); // State to store the input expense ID
   const itemsPerPage = 3;
 
   useEffect(() => {
     fetchExpenses();
   }, []);
 
-  const fetchExpenses = async (id = "") => {
+  const fetchExpenses = async () => {
     try {
-      const url = id
-        ? `https://expense-backend-07ul.onrender.com/expenses/${id}`
-        : "https://expense-backend-07ul.onrender.com/expenses";
-      const res = await axios.get(url, { withCredentials: true });
-
-      // If fetching a single expense, store it as an array to maintain consistency
-      setExpenses(id ? [res.data] : res.data);
+      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", { withCredentials: true });
+      setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses", error);
       alert("Failed to fetch expenses");
@@ -38,7 +34,13 @@ const ExpenseList = ({ expenses, setExpenses }) => {
     }
   };
 
-  const sortedExpenses = [...expenses].sort((a, b) => (sortOrder === "asc" ? a.category.localeCompare(b.category) : b.category.localeCompare(a.category)));
+  const sortedExpenses = [...expenses].sort((a, b) => {
+    if (sortOrder === "asc") {
+      return a.category.localeCompare(b.category);
+    } else {
+      return b.category.localeCompare(a.category);
+    }
+  });
 
   const totalPages = Math.ceil(sortedExpenses.length / itemsPerPage);
   const paginatedExpenses = sortedExpenses.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -56,36 +58,27 @@ const ExpenseList = ({ expenses, setExpenses }) => {
   return (
     <div className="expense-list-container">
       <h2 className="expense-header">Expenses</h2>
-
-      {/* Search by Expense ID */}
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Enter Expense ID"
-          value={expenseId}
-          onChange={(e) => setExpenseId(e.target.value)}
-        />
-        <button onClick={() => fetchExpenses(expenseId)}>Fetch by ID</button>
-      </div>
-
       <div className="sort-buttons">
         <button className="sort-button" onClick={() => setSortOrder("asc")}>Sort A-Z</button>
         <button className="sort-button" onClick={() => setSortOrder("desc")}>Sort Z-A</button>
       </div>
-
       {paginatedExpenses.map((exp) => (
         <div className="expense-item" key={exp._id}>
           {exp.category}: ${exp.amount} on {new Date(exp.date).toLocaleDateString()}
           <button className="delete-button" onClick={() => handleDelete(exp._id)}>Delete</button>
         </div>
       ))}
-
       <div className="pagination">
-        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>
+          Next
+        </button>
       </div>
-
       <h3 className="expense-header">Category Wise Spending</h3>
       <div className="chart-container">
         <ResponsiveContainer width="100%" height={300}>
