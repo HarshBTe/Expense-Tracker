@@ -15,16 +15,21 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const fetchExpenses = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+  
       const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", {
         headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
+  
       setExpenses(res.data);
     } catch (error) {
-      console.error("Error fetching expenses", error);
-      alert("Failed to fetch expenses");
+      console.error("Error fetching expenses:", error);
+      alert(error.response?.data?.message || "Failed to fetch expenses. Please try again.");
     }
   };
+  
 
   const handleDelete = async (id) => {
     try {
