@@ -12,12 +12,19 @@ connectDB();
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3001',
-    credentials: true,
-  })
-);
+
+
+
+
+app.use(cors({
+  origin: 'https://idyllic-cat-ba9003.netlify.app', // Allow the frontend origin
+  credentials: true,               // Allow credentials
+}));
+
+app.options('*', cors()); 
+
+
+
 
 app.use('/auth', authRoutes);
 app.use('/expenses', expenseRoutes);

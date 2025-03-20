@@ -7,7 +7,7 @@ import "../styles/Navbar.css";
 const Navbar = ({ setIsAuthenticated }) => {
   const handleLogout = async () => {
     try {
-      await axios.post("/auth/logout", {}, { withCredentials: true });
+      await axios.post("https://expense-backend-07ul.onrender.com/auth/logout", {}, { withCredentials: true });
       setIsAuthenticated(false);
     } catch (error) {
       console.error("Logout failed", error);

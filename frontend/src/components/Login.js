@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
 
-axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 
 const Login = ({ setIsAuthenticated, setShowRegister }) => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -10,7 +10,7 @@ const Login = ({ setIsAuthenticated, setShowRegister }) => {
   const handleLogin = async () => {
     try {
       console.log("Attempting login with", form);
-      const response = await axios.post("/auth/login", form, { withCredentials: true });
+      const response = await axios.post("https://expense-backend-07ul.onrender.com/auth/login", form, { withCredentials: true });
       console.log("Login successful", response);
       setIsAuthenticated(true);
     } catch (error) {

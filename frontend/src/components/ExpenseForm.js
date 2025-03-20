@@ -14,7 +14,7 @@ const ExpenseForm = ({ fetchExpenses }) => {
         amount: parseFloat(form.amount) || 0, // Convert amount to number
       };
   
-      await axios.post("/expenses", payload, {
+      await axios.post("https://expense-backend-07ul.onrender.com/expenses", payload, {
         withCredentials: true,
         headers: { "Content-Type": "application/json" },
       });

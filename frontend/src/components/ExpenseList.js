@@ -16,7 +16,7 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("/expenses", { withCredentials: true });
+      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", { withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses", error);
@@ -26,7 +26,7 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/expenses/${id}`, { withCredentials: true });
+      await axios.delete(`https://expense-backend-07ul.onrender.com/expenses/${id}`, { withCredentials: true });
       setExpenses((prevExpenses) => prevExpenses.filter((exp) => exp._id !== id));
     } catch (error) {
       console.error("Error deleting expense", error);

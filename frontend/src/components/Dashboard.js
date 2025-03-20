@@ -4,14 +4,14 @@ import Navbar from "./Navbar";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
 
-axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 
 const Dashboard = ({ setIsAuthenticated }) => {
   const [expenses, setExpenses] = useState([]);
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("/expenses", { withCredentials: true });
+      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses", { withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Failed to fetch expenses:", error);

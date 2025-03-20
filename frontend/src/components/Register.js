@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
 
-axios.defaults.baseURL = "https://expense-backend-07ul.onrender.com";
+
 
 const Register = ({ setShowRegister }) => {
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "" });
 
   const handleRegister = async () => {
     try {
-      await axios.post("/auth/register", form);
+      await axios.post("https://expense-backend-07ul.onrender.com/auth/register", form);
       alert("User registered successfully. Please login.");
       setShowRegister(false);
     } catch (error) {
