@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: 'https://superlative-druid-dd943d.netlify.app', // Allow the frontend origin
+  origin: 'https://expense-tracker-frontend-v70j.onrender.com', // Allow the frontend origin
   credentials: true,               // Allow credentials
 }));
 
