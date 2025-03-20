@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 
 app.use(cors({
-  origin: 'https://idyllic-cat-ba9003.netlify.app', // Allow the frontend origin
+  origin: 'https://superlative-druid-dd943d.netlify.app', // Allow the frontend origin
   credentials: true,               // Allow credentials
 }));
 
