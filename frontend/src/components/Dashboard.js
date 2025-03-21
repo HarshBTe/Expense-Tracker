@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
 import { BACKEND_URL } from "../utils/utils";
+import axiosInstance from "../utils/axiois";
 
 
 const BASE_URL = BACKEND_URL;
@@ -13,7 +14,7 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get(BASE_URL+"/expenses", { withCredentials: true });
+      const res = await axiosInstance.get("/expenses", { withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Failed to fetch expenses:", error);

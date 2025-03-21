@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/ExpenseForm.css";
 import { BACKEND_URL } from "../utils/utils";
+import axiosInstance from "../utils/axiois";
 
 
 const BASE_URL = BACKEND_URL;
@@ -17,7 +18,7 @@ const ExpenseForm = ({ fetchExpenses }) => {
         amount: parseFloat(form.amount) || 0, // Convert amount to number
       };
 
-      await axios.post( BASE_URL + "/expenses", payload, {
+      await axiosInstance.post("/expenses", payload, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",

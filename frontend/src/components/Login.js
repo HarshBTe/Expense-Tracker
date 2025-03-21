@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
 import { BACKEND_URL } from "../utils/utils";
+import axiosInstance from "../utils/axiois";
 
 
 
@@ -14,7 +15,7 @@ const Login = ({ setIsAuthenticated, setShowRegister }) => {
   const handleLogin = async () => {
     try {
       console.log("Attempting login with", form);
-      const response = await axios.post(  `${BASE_URL}/auth/login`, form, { withCredentials: true });
+      const response = await  axiosInstance.post(`/auth/login`, form, { withCredentials: true });
       console.log("Login successful", response);
       setIsAuthenticated(true);
     } catch (error) {

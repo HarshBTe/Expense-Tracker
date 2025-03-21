@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/ExpenseList.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { BACKEND_URL } from "../utils/utils";
+import axiosInstance from "../utils/axiois";
 
 const BASE_URL = BACKEND_URL;
 
@@ -17,7 +18,7 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get( BASE_URL + "/expenses" , { withCredentials: true });
+      const res = await  axiosInstance.get("/expenses" ,{}, { withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses:", error);

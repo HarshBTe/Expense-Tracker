@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../styles/Login.css";
 import { BACKEND_URL } from "../utils/utils";
+import axiosInstance from "../utils/axiois";
 
 const BASE_URL = BACKEND_URL;
 
@@ -10,7 +11,7 @@ const Register = ({ setShowRegister }) => {
 
   const handleRegister = async () => {
     try {
-      await axios.post( BASE_URL + "/auth/register", form);
+      await axiosInstance.post("/auth/register", form);
       alert("User registered successfully. Please login.");
       setShowRegister(false);
     } catch (error) {
