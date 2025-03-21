@@ -22,7 +22,7 @@ app.use(cors({
       if (!origin || ALLOWED_LIST.includes(origin)) {
           callback(null, true);
       } else {
-          console.log(chalk.bgRed(`Request from origin ${origin} blocked by CORS`));
+          console.log(`Request from origin ${origin} blocked by CORS`);
           // Continue processing the request without setting headers
           callback(null, false);
       }
