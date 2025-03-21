@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/ExpenseForm.css";
+import { BACKEND_URL } from "../utils/utils";
+
+
+const BASE_URL = BACKEND_URL;
 
 const ExpenseForm = ({ fetchExpenses }) => {
   const [form, setForm] = useState({ amount: "", category: "", date: "", description: "" });
@@ -13,7 +17,7 @@ const ExpenseForm = ({ fetchExpenses }) => {
         amount: parseFloat(form.amount) || 0, // Convert amount to number
       };
 
-      await axios.post("https://expense-backend-07ul.onrender.com/expenses", payload, {
+      await axios.post( BASE_URL + "/expenses", payload, {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",

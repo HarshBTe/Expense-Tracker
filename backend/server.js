@@ -14,10 +14,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 
-
+// console.info(process.env.FRONTEND_URL);
 
 app.use(cors({
-  origin: 'https://expense-tracker-frontend-v70j.onrender.com', // Allow the frontend origin
+  origin: process.env.FRONTEND_URL, // Allow the frontend origin
   credentials: true,               // Allow credentials
 }));
 

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../styles/ExpenseList.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { BACKEND_URL } from "../utils/utils";
+
+const BASE_URL = BACKEND_URL;
 
 const ExpenseList = ({ expenses, setExpenses }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,7 +17,7 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const fetchExpenses = async () => {
     try {
-      const res = await axios.get("https://expense-backend-07ul.onrender.com/expenses" , { withCredentials: true });
+      const res = await axios.get( BASE_URL + "/expenses" , { withCredentials: true });
       setExpenses(res.data);
     } catch (error) {
       console.error("Error fetching expenses:", error);
@@ -24,7 +27,7 @@ const ExpenseList = ({ expenses, setExpenses }) => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://expense-backend-07ul.onrender.com/expenses/${id}`, { withCredentials: true });
+      await axios.delete( BASE_URL + `/expenses/${id}`, { withCredentials: true });
       setExpenses((prevExpenses) => {
         const updatedExpenses = prevExpenses.filter((exp) => exp._id !== id);
         if (updatedExpenses.length % itemsPerPage === 0 && currentPage > 1) {
