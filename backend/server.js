@@ -15,10 +15,22 @@ app.use(cookieParser());
 
 
 // console.info(process.env.FRONTEND_URL);
-
+const ALLOWED_LIST = ['http://localhost:3001', 'http://localhost:3000', "https://expense-tracker-frontend-v70j.onrender.com/"];
 app.use(cors({
-  origin: process.env.FRONTEND_URL, // Allow the frontend origin
-  credentials: true,               // Allow credentials
+  origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin || ALLOWED_LIST.includes(origin)) {
+          callback(null, true);
+      } else {
+          console.log(chalk.bgRed(`Request from origin ${origin} blocked by CORS`));
+          // Continue processing the request without setting headers
+          callback(null, false);
+      }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
+  allowedHeaders: 'Content-Type',
 }));
 
 app.options('*', cors()); 
