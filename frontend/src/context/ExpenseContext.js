@@ -43,6 +43,9 @@ export const ExpenseProvider = ({ children }) => {
     }
   };
 
+
+
+
   const checkAuth = async () => {
     console.log("Checking authentication...");
     try {
@@ -50,18 +53,20 @@ export const ExpenseProvider = ({ children }) => {
       console.log("Auth check successful:", res.data);
       setIsAuthenticated(true);
     } catch (error) {
-      console.error("Auth check failed:", error);
+      if (error.response && error.response.status !== 401) {
+        console.error("Auth check failed:", error);
+      }
       setIsAuthenticated(false);
     }
   };
+  
 
   const login = async (form) => {
     console.log("Logging in...");
     try {
       await axiosInstance.post("/auth/login", form, { withCredentials: true });
       console.log("Login successful");
-      setIsAuthenticated(true);
-      fetchExpenses();  // Fetch expenses immediately after login
+      setIsAuthenticated(true);  // This triggers useEffect to fetch expenses
     } catch (error) {
       console.error("Login failed", error);
       throw error;
