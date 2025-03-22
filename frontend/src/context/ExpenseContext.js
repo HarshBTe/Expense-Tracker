@@ -88,12 +88,12 @@ export const ExpenseProvider = ({ children }) => {
     }
   };
 
-  // useEffect(() => {
-  //   const init = async () => {
-  //     await checkAuth();
-  //   };
-  //   init();
-  // }, []);
+  useEffect(() => {
+    const init = async () => {
+      await checkAuth();
+    };
+    init();
+  }, []);
 
   useEffect(() => {
     console.log("isAuthenticated changed:", isAuthenticated);
