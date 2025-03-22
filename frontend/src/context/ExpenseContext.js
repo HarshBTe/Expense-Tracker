@@ -1,3 +1,4 @@
+// ExpenseContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axiosInstance from "../utils/axiois";
 
@@ -43,9 +44,6 @@ export const ExpenseProvider = ({ children }) => {
     }
   };
 
-
-
-
   const checkAuth = async () => {
     console.log("Checking authentication...");
     try {
@@ -53,13 +51,10 @@ export const ExpenseProvider = ({ children }) => {
       console.log("Auth check successful:", res.data);
       setIsAuthenticated(true);
     } catch (error) {
-      if (error.response && error.response.status !== 401) {
-        console.error("Auth check failed:", error);
-      }
+      console.error("Auth check failed:", error);
       setIsAuthenticated(false);
     }
   };
-  
 
   const login = async (form) => {
     console.log("Logging in...");
@@ -112,7 +107,7 @@ export const ExpenseProvider = ({ children }) => {
   }, [isAuthenticated]);
 
   return (
-    <ExpenseContext.Provider value={{ expenses, fetchExpenses, addExpense, deleteExpense, login, register, logout, isAuthenticated, setIsAuthenticated }}>
+    <ExpenseContext.Provider value={{ expenses, fetchExpenses, addExpense, deleteExpense, login, register, logout, checkAuth, isAuthenticated, setIsAuthenticated }}>
       {children}
     </ExpenseContext.Provider>
   );
