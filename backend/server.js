@@ -15,7 +15,7 @@ app.use(cookieParser());
 
 
 // console.info(process.env.FRONTEND_URL);
-const ALLOWED_LIST = ['http://localhost:3001', 'http://localhost:3000', "https://expense-tracker-frontend-v70j.onrender.com/"];
+const ALLOWED_LIST = ['http://localhost:3001', 'http://localhost:3000', "https://expense-tracker-frontend-v70j.onrender.com"];
 app.use(cors({
   origin: function (origin, callback) {
       // Allow requests with no origin (like mobile apps or curl requests)

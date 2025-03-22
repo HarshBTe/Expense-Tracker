@@ -1,46 +1,13 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import "../styles/ExpenseList.css";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import { BACKEND_URL } from "../utils/utils";
-import axiosInstance from "../utils/axiois";
+import { useExpenseContext } from "../context/ExpenseContext";
 
-const BASE_URL = BACKEND_URL;
-
-const ExpenseList = ({ expenses, setExpenses }) => {
+const ExpenseList = () => {
+  const { expenses, deleteExpense } = useExpenseContext();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState("asc");
   const itemsPerPage = 3;
-
-  useEffect(() => {
-    fetchExpenses();
-  }, [setExpenses]);
-
-  const fetchExpenses = async () => {
-    try {
-      const res = await  axiosInstance.get("/expenses" ,{}, { withCredentials: true });
-      setExpenses(res.data);
-    } catch (error) {
-      console.error("Error fetching expenses:", error);
-      alert(error.response?.data?.message || "Failed to fetch expenses. Please try again.");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete( BASE_URL + `/expenses/${id}`, { withCredentials: true });
-      setExpenses((prevExpenses) => {
-        const updatedExpenses = prevExpenses.filter((exp) => exp._id !== id);
-        if (updatedExpenses.length % itemsPerPage === 0 && currentPage > 1) {
-          setCurrentPage(currentPage - 1);
-        }
-        return updatedExpenses;
-      });
-    } catch (error) {
-      console.error("Error deleting expense", error);
-      alert("Failed to delete expense");
-    }
-  };
 
   const sortedExpenses = [...expenses].sort((a, b) => {
     if (sortOrder === "asc") {
@@ -73,7 +40,7 @@ const ExpenseList = ({ expenses, setExpenses }) => {
       {paginatedExpenses.map((exp) => (
         <div className="expense-item" key={exp._id}>
           {exp.category}: ${exp.amount} on {new Date(exp.date).toLocaleDateString()}
-          <button className="delete-button" onClick={() => handleDelete(exp._id)}>Delete</button>
+          <button className="delete-button" onClick={() => deleteExpense(exp._id)}>Delete</button>
         </div>
       ))}
       <div className="pagination">

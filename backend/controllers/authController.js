@@ -10,13 +10,30 @@ exports.register = async (req, res) => {
   res.status(201).send('User registered');
 };
 
+// exports.login = async (req, res) => {
+//   const { email, password } = req.body;
+//   const user = await User.findOne({ email });
+//   if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send('Invalid credentials');
+//   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+//   res.cookie('token', token, { httpOnly: true }).send('Logged in');
+// };
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (!user || !(await bcrypt.compare(password, user.password))) return res.status(401).send('Invalid credentials');
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  res.cookie('token', token, { httpOnly: true }).send('Logged in');
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).send("Invalid credentials");
+  }
+  
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    sameSite: "Lax", // "Strict" or "None" (with Secure) for cross-origin
+    secure: process.env.NODE_ENV === "production", // Ensures Secure in production
+  }).send("Logged in");
 };
+
 
 exports.logout = (req, res) => {
   res.clearCookie('token').send('Logged out');

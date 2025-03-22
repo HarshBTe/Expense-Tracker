@@ -1,21 +1,25 @@
+// Register.js
 import React, { useState } from "react";
-import axios from "axios";
 import "../styles/Login.css";
-import { BACKEND_URL } from "../utils/utils";
-import axiosInstance from "../utils/axiois";
-
-const BASE_URL = BACKEND_URL;
+import { useExpenseContext } from "../context/ExpenseContext";
 
 const Register = ({ setShowRegister }) => {
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+  const { register } = useExpenseContext();
 
   const handleRegister = async () => {
     try {
-      await axiosInstance.post("/auth/register", form);
+      await register(form);
       alert("User registered successfully. Please login.");
-      setShowRegister(false);
+      setShowRegister(false);  // Redirect to login
     } catch (error) {
-      alert("Registration failed. Please try again.");
+      console.error("Registration failed", error);
+      alert(error.response?.data?.message || "Registration failed. Please try again.");
     }
   };
 

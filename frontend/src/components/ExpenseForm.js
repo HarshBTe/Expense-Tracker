@@ -1,68 +1,66 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "../styles/ExpenseForm.css";
-import { BACKEND_URL } from "../utils/utils";
-import axiosInstance from "../utils/axiois";
+import { useExpenseContext } from "../context/ExpenseContext";
 
-
-const BASE_URL = BACKEND_URL;
-
-const ExpenseForm = ({ fetchExpenses }) => {
+const ExpenseForm = () => {
+  const { addExpense } = useExpenseContext();
   const [form, setForm] = useState({ amount: "", category: "", date: "", description: "" });
-  const token = localStorage.getItem("token");
 
-  const addExpense = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.amount || !form.category || !form.date || !form.description) {
+      alert("All fields are required.");
+      return;
+    }
     try {
-      const payload = {
+      await addExpense({
         ...form,
-        amount: parseFloat(form.amount) || 0, // Convert amount to number
-      };
-
-      await axiosInstance.post("/expenses", payload, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        amount: parseFloat(form.amount) || 0,
       });
-
-      alert("Expense added successfully!");
-      setForm({ amount: "", category: "", date: "", description: "" }); // Reset form
-      fetchExpenses();
+      setForm({ amount: "", category: "", date: "", description: "" });
     } catch (error) {
-      console.error("Error adding expense:", error);
-      alert(error.response?.data?.message || "Failed to add expense. Please try again.");
+      console.error("Failed to add expense", error);
+      alert("Failed to add expense. Please try again.");
     }
   };
 
   return (
-    <div className="form-container">
+    <form className="form-container" onSubmit={handleSubmit}>
       <input
         className="form-input"
         placeholder="Amount"
+        aria-label="Amount"
+        type="number"
         value={form.amount}
         onChange={(e) => setForm({ ...form, amount: e.target.value })}
+        required
       />
       <input
         className="form-input"
         placeholder="Category"
+        aria-label="Category"
         value={form.category}
         onChange={(e) => setForm({ ...form, category: e.target.value })}
+        required
       />
       <input
         type="date"
         className="form-input"
+        aria-label="Date"
         value={form.date}
         onChange={(e) => setForm({ ...form, date: e.target.value })}
+        required
       />
       <input
         className="form-input"
         placeholder="Description"
+        aria-label="Description"
         value={form.description}
         onChange={(e) => setForm({ ...form, description: e.target.value })}
+        required
       />
-      <button className="form-button" onClick={addExpense}>Add Expense</button>
-    </div>
+      <button className="form-button" type="submit">Add Expense</button>
+    </form>
   );
 };
 

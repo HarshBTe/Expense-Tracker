@@ -1,23 +1,15 @@
 import React, { useState } from "react";
-import axios from "axios";
 import "../styles/Login.css";
-import { BACKEND_URL } from "../utils/utils";
-import axiosInstance from "../utils/axiois";
+import { useExpenseContext } from "../context/ExpenseContext";
 
-
-
-const BASE_URL = BACKEND_URL;
-console.log(BASE_URL);
-
-const Login = ({ setIsAuthenticated, setShowRegister }) => {
+const Login = ({ setShowRegister }) => {
   const [form, setForm] = useState({ email: "", password: "" });
+  const { login } = useExpenseContext();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();  // Prevent default form submission
     try {
-      console.log("Attempting login with", form);
-      const response = await  axiosInstance.post(`/auth/login`, form, { withCredentials: true });
-      console.log("Login successful", response);
-      setIsAuthenticated(true);
+      await login(form);
     } catch (error) {
       console.error("Login failed", error);
       if (error.response && error.response.data) {
@@ -34,23 +26,30 @@ const Login = ({ setIsAuthenticated, setShowRegister }) => {
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-title">Login</h2>
-        <div className="login-form">
+        <form className="login-form" onSubmit={handleLogin}>
           <input
+            type="email"
             className="login-input"
             placeholder="Email"
             value={form.email}
+            autoComplete="email"
             onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
           />
           <input
             type="password"
             className="login-input"
             placeholder="Password"
             value={form.password}
+            autoComplete="current-password"
             onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
           />
-          <button className="login-button" onClick={handleLogin}>Login</button>
-          <button className="register-button" onClick={() => setShowRegister(true)}>Register</button>
-        </div>
+          <button type="submit" className="login-button">Login</button>
+          <button type="button" className="register-button" onClick={() => setShowRegister(true)}>
+            Register
+          </button>
+        </form>
       </div>
     </div>
   );

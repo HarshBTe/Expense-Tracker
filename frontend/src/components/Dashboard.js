@@ -1,25 +1,11 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import Navbar from "./Navbar";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
-import { BACKEND_URL } from "../utils/utils";
-import axiosInstance from "../utils/axiois";
+import { useExpenseContext } from "../context/ExpenseContext";
 
-
-const BASE_URL = BACKEND_URL;
-
-const Dashboard = ({ setIsAuthenticated }) => {
-  const [expenses, setExpenses] = useState([]);
-
-  const fetchExpenses = async () => {
-    try {
-      const res = await axiosInstance.get("/expenses", { withCredentials: true });
-      setExpenses(res.data);
-    } catch (error) {
-      console.error("Failed to fetch expenses:", error);
-    }
-  };
+const Dashboard = () => {
+  const { fetchExpenses } = useExpenseContext();
 
   useEffect(() => {
     fetchExpenses();
@@ -27,9 +13,9 @@ const Dashboard = ({ setIsAuthenticated }) => {
 
   return (
     <div>
-      <Navbar setIsAuthenticated={setIsAuthenticated} />
-      <ExpenseForm fetchExpenses={fetchExpenses} />
-      <ExpenseList expenses={expenses} setExpenses={setExpenses} />
+      <Navbar />
+      <ExpenseForm />
+      <ExpenseList />
     </div>
   );
 };

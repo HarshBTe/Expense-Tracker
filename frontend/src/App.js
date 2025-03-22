@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Dashboard from "./components/Dashboard";
+import { ExpenseProvider, useExpenseContext } from "./context/ExpenseContext";
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showRegister, setShowRegister] = useState(false);
+function AppContent() {
+  const { isAuthenticated } = useExpenseContext();
+  const [showRegister, setShowRegister] = React.useState(false);
 
   return (
     <div>
       {isAuthenticated ? (
-        <Dashboard setIsAuthenticated={setIsAuthenticated} />
+        <Dashboard />
       ) : showRegister ? (
         <Register setShowRegister={setShowRegister} />
       ) : (
-        <Login setIsAuthenticated={setIsAuthenticated} setShowRegister={setShowRegister} />
+        <Login setShowRegister={setShowRegister} />
       )}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <ExpenseProvider>
+      <AppContent />
+    </ExpenseProvider>
   );
 }
 
