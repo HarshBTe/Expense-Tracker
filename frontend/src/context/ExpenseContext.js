@@ -1,4 +1,3 @@
-// ExpenseContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
 import axiosInstance from "../utils/axiois";
 
@@ -15,9 +14,6 @@ export const ExpenseProvider = ({ children }) => {
       console.log("Expenses fetched successfully:", res.data);
       setExpenses(res.data);
     } catch (error) {
-      if (error.response && error.response.status === 401) {
-        setIsAuthenticated(false);
-      }
       console.error("Failed to fetch expenses:", error);
     }
   };
